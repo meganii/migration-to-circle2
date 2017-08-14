@@ -48,7 +48,7 @@ jobs:
       - run:
           name: run tests
           command: |
-            python --version
+            python script/vectorize_text.py
 
       - store_artifacts:
           path: test-reports
