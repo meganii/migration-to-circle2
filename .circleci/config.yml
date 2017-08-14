@@ -5,13 +5,13 @@
 version: 2
 jobs:
   build:
-    machine: true
-    environment:
-      - DOCKER_IMAGE_REPO: meganii/dockerfile-mecab-python3
-    # docker:
+    # machine: true
+    # environment:
+    #   - DOCKER_IMAGE_REPO: meganii/dockerfile-mecab-python3
+    docker:
       # specify the version you desire here
       # use `-browsers` prefix for selenium tests, e.g. `3.6.1-browsers`
-      # - image: meganii/dockerfile-mecab-python3:latest
+      - image: meganii/dockerfile-mecab-python3:latest
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -22,10 +22,10 @@ jobs:
 
     steps:
       - checkout
-      - run: docker pull $DOCKER_IMAGE_REPO:latest
-      - run: docker build -t circleci --cache-from $DOCKER_IMAGE_REPO:latest .
-      - run: docker tag circleci $DOCKER_IMAGE_REPO:latest
-      - run: docker push $DOCKER_IMAGE_REPO:latest
+      # - run: docker pull $DOCKER_IMAGE_REPO:latest
+      # - run: docker build -t circleci --cache-from $DOCKER_IMAGE_REPO:latest .
+      # - run: docker tag circleci $DOCKER_IMAGE_REPO:latest
+      # - run: docker push $DOCKER_IMAGE_REPO:latest
 
       # Download and cache dependencies
       - restore_cache:
