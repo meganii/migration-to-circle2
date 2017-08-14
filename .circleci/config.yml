@@ -48,7 +48,6 @@ jobs:
       - run:
           name: run tests
           command: |
-            . venv/bin/activate
             python --version
 
       - store_artifacts:
