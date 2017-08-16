@@ -1,0 +1,74 @@
+---
+title: "[2017年版]なるべくお金を使わずにサーバ遊びをするためには？"
+date: 2017-05-01T21:59:18+09:00
+lastmod: 2017-05-01T21:59:18+09:00
+comments: true
+category: ['']
+tags: ['']
+published: false
+slug: free-vps
+img:
+---
+
+<!--more-->
+{{% googleadsense %}}
+
+
+GMOインターネットの株主優待は必須です！
+
+
+## Google Compute Platform
+
+無料枠が充実しました。
+
+
+## Zeit
+
+JavaScriptなら・・・
+
+## Heroku
+
+月X時間分利用可能
+
+## AWS
+
+初期登録すると、１年間X円分が無料で使えます。
+
+無料期間終了後は、以下のサービスが無料で使えます。
+lamuda
+
+
+## Github pages
+
+
+
+## Netlify
+
+- Webサイト構築　JavaScriptのアプリケーションなら配置可能
+
+
+## Azure
+
+初期登録すると、XX円分の無料枠がもらえます。
+無料枠終了後は、以下のサービスが無料で使えます。有用なのは、Web Appでしょうか。
+
+
+## GMOインターネット株主優待
+
+半期 5,000円分の
+
+Conoha VPSを契約すれば、
+
+
+## GMOクラウド株主優待
+半期 5,000
+
+
+## ドメイン代を安く済ます
+
+
+
+
+GMOインターネットの株は、ネット証券で変えます。
+
+- GMOクリック証券

@@ -1,0 +1,73 @@
+---
+
+title: 学び方をリファクタリング
+date: 2014-06-26T22:28:00+09:00
+category: ['Art']
+tags: ["リファクタリング","learning"]
+published: true
+slug: learning
+img: "https://farm7.staticflickr.com/6192/6120460834_453f793235_z.jpg"
+---
+
+<a href="https://www.flickr.com/photos/35571855@N06/6120460834" title="20110704221819 by meganii, on Flickr"><img src="https://farm7.staticflickr.com/6192/6120460834_453f793235_z.jpg" class="img-responsive" width="500" height="500" alt="20110704221819"></a>
+
+## 意識的な学び
+- 学びとは、「人に対して」行われることではない。「人が」行うことである。
+- 経験の伴わない、知識のみの習得は効果が無い
+
+２点目はすごく分かる。机上の知識だけでは、全然使いものにならない。やってみて得たフィードバックをもとに、知識を深めるのがよさそう。
+
+
+
+{{% googleadsense %}}
+
+## Play 遊ぶこと　「目的を定めない自由な探索」
+
+遊ぶこととは、「目的を定めない自由な探索」である。
+
+
+最近、遊んでるかな？目的を考えずに、ただやりたいだけでやってることってあったっけな？ってちょっと不安になった。
+
+
+## 「わからない」から始めよう
+「わからない」から始めるしかない。
+
+未だに分からないことだらけなんだけど、「わからない」空白を埋め続けていけば、自分の地図が出来てくるはずと信じて埋め続けよう。
+
+
+
+
+## 「SMART」な目標
+### Specific 具体的
+例えば、「Erlangを学びたい」ではなく、「Erlangを使って、動的にコンテンツを生成するWebサーバを作るたい」など具体的にすること。
+
+### Measurable 測定可能
+どうしたら、いつ何を成し遂げたとわかる？
+
+### Achievable 達成可能性
+達成不可能な目標や目的は目指しても、ストレスになるだけである。
+次の目標は、「今」自分がいる位置から見て達成可能なものであること。
+
+「目標ってね、高すぎるとダメなんですよ。高く持つのは夢なんですよね」っていう言葉を思い出した。
+
+
+> 初めから何時間練習しようと思って練習してるわけじゃない。自分の中に、１打席、１球に対しての目標があって、それをクリアするために練習している。一つクリアすれば、次の課題、それもクリアすればまた次の課題がある。だからこそ、集中して続けていられる。
+
+<a href="http://meganii.com/blog/2012/06/06/ichiro/" target="_blank"><img class="alignleft" align="left" border="0" src="http://capture.heartrails.com/150x130/shadow?http://meganii.com/blog/2012/06/06/ichiro/" alt="" width="150" height="130" /></a><a style="color:#0070C5;" href="http://meganii.com/blog/2012/06/06/ichiro/" target="_blank">一流の習慣術　イチローとマー君が実践する「自分力」の育て方　の奥村さんの講演を聞いてきた – じょーぶん部</a><a href="http://b.hatena.ne.jp/entry/http://meganii.com/blog/2012/06/06/ichiro/" target="_blank"><img border="0" src="http://b.hatena.ne.jp/entry/image/http://meganii.com/blog/2012/06/06/ichiro/" alt="" /></a><br style="clear:both;" /><br>
+
+
+### Relevant 適切
+それは自分にとって本当に意味のあることだろうか？
+
+
+### Time-boxed 期限を定める
+自分で期限を定める必要がある。自分に対して、小さな区切りをいくつも設ける。
+「私がいつまでに何を行う」と明言する。
+
+
+実現可能な細かい目標を立てるのってなかなか苦手である。ちょっと調子に乗るぐらい、細かく目標を達成いけるようにしたい。
+
+
+## 今日の積読本消化
+
+{{% amazon_ 4873114039 %}}

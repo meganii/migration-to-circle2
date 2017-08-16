@@ -1,0 +1,168 @@
+---
+title: 索引設計についてのまとめ
+date: 2013-10-02T21:45:00+09:00
+lastmod: 2017-02-12T11:45:00+09:00
+category: ['Tech']
+tags: ['索引設計','DB']
+published: true
+slug: index
+img: "https://images-na.ssl-images-amazon.com/images/I/51sApXJW7HL._SL160_.jpg"
+---
+
+DBMSにおいて、索引(インデックス)が重要なことは認識しているが、
+
+- そもそもどんな索引にはどんな種類があるのか
+- どんな場合に索引をつければよいのか
+- 索引をつけた場合のデメリットにはどんなものがあるのか
+
+理解が浅かったため、参考図書・参考URLを元に、索引設計の心得をまとめておく。
+
+
+{{% googleadsense %}}
+
+
+
+## インデックスの特性
+
+まずインデックスの特性として、以下3つが挙げられる。
+
+### 1.事前に作成しておく必要がある
+
+表が大きい場合、作成にはそれなりの時間が掛かり、インデックスのためにディスクを消費する。
+
+
+### 2.検索に必要な情報が含まれるインデックスを(RDBが)自動的に使用する
+
+検索に必要な列(=WHERE句に書かれた列)
+ - 条件検索の列
+ - ジョインのターゲット列
+
+### 3.インデックスはメンテナンスが必要
+表のデータが更新されると、インデックスは必ず(自動的に)更新される。そのため、インデックスがあることにより、検索は早くなるが、更新処理(INSERT, UPDATE, DELETE)は遅くなる。
+
+```
+INSERT,UPDATE,DELETE時のインデックスのメンテナンス処理の概要について。
+新しい行の追加 リーフブロックへ索引エントリを追加する
+行の削除 リーフブロックから索引エントリを削除する
+索引列の列値の更新 リーフブロックから古い索引エントリを削除し、新しい列値に対応したリーフブロックに索引エントリを追加する
+[インデックスをタクサン作ったときINSERT,UPDATE,DELETEは遅くなるか - kagamihogeのblog](http://d.hatena.ne.jp/kagamihoge/20130817/1376707339)
+```
+ORACLEの場合、UPDATEのときは、DELETE⇛INSERTになるためより時間が掛かる。
+
+
+## インデックスはどこに、どれだけ作成すべきか
+
+### インデックスをつけるべき箇所
+- 表のプライマリーキーは(ほぼ)必須 (例外として小さい表)
+- 読み込み中心のシステム(表)は、インデックスが多くても問題ない
+- WHERE句で検索やジョインによく使用される列
+- カーディナリティが高い列 (SYSCAT, COLUMNS表のCOLCARD列で確認)
+
+### インデックスを避けるべき箇所
+- 更新が多いシステム(表)はインデックスを控えめにする
+- カーディナリティが低い列(フラグ列など)
+
+
+## 索引の種類
+
+1. Bツリー索引
+カーディナリティが高い、定型のSQL文の場合に用いる。  
+ビットマップ索引のようにビットマップからROWIDに変換する必要がないのでダイレクトにデータにアクセスできる（データブロックへのアクセスは速い）。ただし、索引を論理演算（AND, OR）で結合することはできないので非定型のSQL文にはあまり向かない。
+
+2. ビットマップ索引
+カーディナリティが低い場合に用いる。  
+非定型のSQL文に対しては索引を論理演算で結合できるので、複数索引の組合せを気にする必要がない（複数索引を持つ必要がない）。
+
+[Oracle Databaseの索引（インデックス）の種類 - Bツリー、ビットマップ、索引構成表、索引クラスタ（ハッシュ・クラスタ）](https://blogs.oracle.com/oracle4engineer/entry/oracle_database_-_b)
+
+
+## 作成する列の候補
+### 1.一意性の高い索引を
+Bツリー索引はテーブルに対して最適な一つの索引を使う。(ビットマップ索引は複数の索引が論理演算されるので、複数の索引を利用できる)
+
+そのため、複数の列を条件に指定している場合は、できるだけ全ての列で複数索引を作成すること。これにより、一意性が高くなり、アクセスするブロック数を少なくでき、早くアクセスできる。
+
+
+### 2.使用頻度の高い列を先頭に
+全ての列の組み合わせの索引を作成すると数が多くなるため、使用頻度の多くない組み合わせ、または性能要件が高くない条件は省く。
+
+このとき、作成する索引の先頭には頻繁に使用する列を持ってきて、多くのSQL文で使われるようにする。
+(索引は、大小比較でデータを絞り込むため、先頭の値が決まらないと絞り込めない。よって、索引の先頭の列は条件で使用されている必要がある)
+
+
+### 3. 選択率の低い列を先頭に
+選択率の低い列(ユニーク性の高い列)から指定する。
+
+
+
+### 4. 非ユニーク索引にはキー圧縮
+
+## 候補
+### 頻繁にWHERE句の比較条件で使用されている選択率の低い列
+比較条件の列に索引が作成されていると、索引範囲スキャン(INDEX RANGE SCAN) が行われる。
+(一意索引で等価条件の場合はINDEX UNIQUE SCAN)
+
+この場合、アクセスする範囲は少ないほうが性能が良いため、選択率が低くなる列が効果的である。
+
+カーディナリティの高い列は選択率が低くなるが、範囲指定(<,>など)では選択率が高くなる場合がある。
+
+### 頻繁に結合が行われている列
+ネステッド・ループ結合では内部表(最初にアクセスしないテーブル)の結合列で索引を使用して結合するため、結合列に索引がないと効率のよいアクセスにならない。
+
+結合する行数が少ない ⇛ 結合列に索引を作成してネステッド・ループ結合するほうが効率が良い。
+
+### 頻繁にソートされている列
+索引はソートして格納されていますので、ORDER BYのようなソート処理にも効果がある（索引範囲スキャンや全索引スキャンするだけでソート結果になる）。ただし、NULLが存在する列のBツリー索引では効果がない（使用されない）ので注意すること（これは、Bツリー索引ではキー値にNULLは含まれないため。ただし、複数列索引ではすべての列値がNULLの場合のみ含まれないようになる）。
+
+
+
+### 頻繁に更新されていない列
+索引が作成されている列が更新されると索引も更新する必要がありますので、頻繁に更新されるとオーバーヘッドが大きくなり、断片化も発生し易くなるため効果が低下する。その断片化を解消するための再構築の頻度も多くなる可能性があるので、作成しない方が良い（作成しなくても良いようにデータベースを設計すること）。ただし、検索の性能が更新よりも優先度が高い場合もあるため、その場合のみ作成するとすればよい。
+
+## 結合の種類
+### 1. ネステッド・ループ結合
+
+表の一部分を結合する場合に有効な結合方法。内部表の結合条件列に索引が作成されていて、その索引を使用することでデータに効率的にアクセスできる場合に利用する。
+
+結合を試みるレコード数がより少ない方を外部表、レコード数に大差がない場合、結合条件列の索引スキャンがより効率的な方を内部表とする。
+
+### 2. ソート/マージ結合
+表の大部分を結合する場合に有効な結合方法。
+
+双方の表を結合条件列でソートし、結果をマージすることで対象レコードを抽出する。
+
+
+### 3. ハッシュ結合
+結合条件に等価条件が指定され、大量のレコード、あるいは表の大部分を結合する場合に有効な結合方法。
+
+ソート/マージ結合に比べて、事前のソート処理が不要となるため効率的な結合方法。
+
+[Oracle SQLチューニング講座（3）：SQLチューニングの必須知識を総ざらい（後編） (1/3) - ＠IT](http://www.atmarkit.co.jp/ait/articles/0408/25/news101.html)
+
+<a href="http://image.itmedia.co.jp/l/im/ait/articles/0408/25/l_r3oracle_sql03_01.gif" target="_blank"><img class="alignleft" align="left" border="0" src="http://capture.heartrails.com/150x130/shadow?http://image.itmedia.co.jp/l/im/ait/articles/0408/25/l_r3oracle_sql03_01.gif" alt="" width="150" height="130" /></a><a style="color:#0070C5;" href="http://image.itmedia.co.jp/l/im/ait/articles/0408/25/l_r3oracle_sql03_01.gif" target="_blank">SQLチューニングの必須知識を総ざらい（後編） - ＠IT</a><a href="http://b.hatena.ne.jp/entry/http://image.itmedia.co.jp/l/im/ait/articles/0408/25/l_r3oracle_sql03_01.gif" target="_blank"><img border="0" src="http://b.hatena.ne.jp/entry/image/http://image.itmedia.co.jp/l/im/ait/articles/0408/25/l_r3oracle_sql03_01.gif" alt="" /></a><br style="clear:both;" /><br>
+
+
+結合のアルゴリズムについては、以下の記事で説明する。
+<a href="https://meganii.com/blog/2015/06/01/how-to-move-join-nestedloops-hash-sortmerge/" target="_blank"><img class="alignleft" align="left" border="0" src="http://capture.heartrails.com/150x130/shadow?http://meganii.com/blog/2015/06/01/how-to-move-join-nestedloops-hash-sortmerge/" alt="" width="150" height="130" /></a><a style="color:#0070C5;" href="http://meganii.com/blog/2015/06/01/how-to-move-join-nestedloops-hash-sortmerge/" target="_blank">[SQL実践入門]結合のアルゴリズム Nested Loops, Hash, Sort Merge</a><a href="http://b.hatena.ne.jp/entry/https://meganii.com/blog/2015/06/01/how-to-move-join-nestedloops-hash-sortmerge/" target="_blank"><img border="0" src="http://b.hatena.ne.jp/entry/image/https://meganii.com/blog/2015/06/01/how-to-move-join-nestedloops-hash-sortmerge/" alt="" /></a><br style="clear:both;" /><br>
+
+
+## 用語説明
+
+- カーディナリティ
+レコード中の一意な値の個数を指す。例えば、性別データ（男、女）のように値の種類が少ない場合には、カーディナリティが低いという。逆に社員番号のように、ほとんどの値が一意である場合は、カーディナリティが高いという。
+[Oracle SQLチューニング講座（3）：SQLチューニングの必須知識を総ざらい（後編） (2/3) - ＠IT](http://www.atmarkit.co.jp/ait/articles/0408/25/news101_2.html)
+
+
+## 参考
+- [DBパフォーマンスチューニングの基礎：インデックス入門](http://www.slideshare.net/simosako/rdb)
+- [津島博士のパフォーマンス講座　第6回　パフォーマンスの基礎である索引について](http://www.oracle.com/technetwork/jp/database/articles/tsushima/tsm06-1598252-ja.html)
+- [津島博士のパフォーマンス講座　第21回　「索引について（２）」](http://www.oracle.com/technetwork/jp/database/articles/tsushima/index-1849112-ja.html)
+
+津島博士のパフォーマンス講座は参考になった。Oracleの動きを押さえたい方は、一読することをおすすめする。
+
+
+## 参考図書
+
+<div class="booklink-box"><div class="booklink-image"><a href="http://www.amazon.co.jp/exec/obidos/asin/B00EE1XPAI/meganii-22/" target="_blank" ><img src="https://images-na.ssl-images-amazon.com/images/I/51sApXJW7HL._SL160_.jpg" style="border: none;" /></a></div><div class="booklink-info"><div class="booklink-name"><a href="http://www.amazon.co.jp/exec/obidos/asin/B00EE1XPAI/meganii-22/" target="_blank" >達人に学ぶDB設計 徹底指南書[Kindle版]</a><div class="booklink-powered-date">posted with <a href="http://yomereba.com" rel="nofollow" target="_blank">ヨメレバ</a></div></div><div class="booklink-detail">ミック 翔泳社 2013-08-07    </div><div class="booklink-link2"><div class="shoplinkkindle"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/B00EE1XPAI/meganii-22/" target="_blank" >Kindle</a></div><div class="shoplinkamazon"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/4798124702/meganii-22/" target="_blank" >Amazon[書籍版]</a></div>                              	  	  	      </div></div><div class="booklink-footer"></div></div>
+
+<div class="booklink-box"><div class="booklink-image"><a href="http://www.amazon.co.jp/exec/obidos/asin/4797336080/meganii-22/" target="_blank" ><img src="https://images-na.ssl-images-amazon.com/images/I/41MzdEMqAVL._SL160_.jpg" style="border: none;" /></a></div><div class="booklink-info"><div class="booklink-name"><a href="http://www.amazon.co.jp/exec/obidos/asin/4797336080/meganii-22/" target="_blank" >プロとしてのSQLチューニング入門</a><div class="booklink-powered-date">posted with <a href="http://yomereba.com" rel="nofollow" target="_blank">ヨメレバ</a></div></div><div class="booklink-detail">福田 武志 ソフトバンク クリエイティブ 2007-03-28    </div><div class="booklink-link2"><div class="shoplinkamazon"><a href="http://www.amazon.co.jp/exec/obidos/asin/4797336080/meganii-22/" target="_blank" >Amazon</a></div><div class="shoplinkkindle"><a href="http://www.amazon.co.jp/gp/search?keywords=%83v%83%8D%82%C6%82%B5%82%C4%82%CCSQL%83%60%83%85%81%5B%83j%83%93%83O%93%FC%96%E5&__mk_ja_JP=%83J%83%5E%83J%83i&url=node%3D2275256051&tag=meganii-22" target="_blank" >Kindle</a></div><div class="shoplinkrakuten"><a href="http://hb.afl.rakuten.co.jp/hgc/13e181b2.b5761023.13e181b3.cbc7b217/?pc=%3Fscid%3Daf_ich_link_urltxt%26m%3Dhttp%3A%2F%2Fm.rakuten.co.jp%2Fev%2Fbook%2F" target="_blank" >楽天ブックス</a></div>                  	  	  	  <div class="shoplinktoshokan"><a href="http://calil.jp/book/4797336080" target="_blank" >図書館</a></div></div></div><div class="booklink-footer"></div></div>

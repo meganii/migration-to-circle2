@@ -1,0 +1,45 @@
+---
+
+title: 最近文章を書かなくなってきている
+date: 2012-03-14
+category: ['Art']
+tags: 
+published: true
+slug: write
+---
+
+<span style="font-size:10px;"><a href="http://www.flickr.com/photos/wickenden/3245260680/" target="_blank"><img src="http://farm4.static.flickr.com/3128/3245260680_7eabe5e375.jpg" alt="Writing Notes with Grammy" /></a><br />Writing Notes with Grammy / wickenden</span>
+
+<p>いつからだろう、まともに文章を書かなくなってきたのは。</p>
+
+<p>学校を卒業すると、小学校みたいに読書感想文があるわけでもなく、大学みたいにレポートを書くわけでもない。最近、まともに文章を書いていない。圧倒的に文章を書く量が減ってしまっている。</p>
+
+
+<p>そのせいで、文章を書くことが苦手になっていることを最近感じる。日本語って難しいよね。</p>
+
+
+<p>思ったこと、考えたことをブログとして、文章に起こす練習をしよう。<br />
+しかも、決まった時間である程度のものをかけるようになろう。</p>
+
+
+
+<p>練習あるのみですよね。</p>
+
+
+<p>ってことで、最近読み始めました。</p>
+<div class="amz-container" style="overflow:hidden;margin-bottom:20px;">
+  <div class="amz-left" style="float:left; margin:0 20px 0;">
+    <a href="http://www.amazon.co.jp/exec/obidos/ASIN/4798118338/meganii-22/ref=nosim/" rel="nofollow" target="_blank"><img src="https://images-na.ssl-images-amazon.com/images/I/41Q5Cy81RqL._SL160_.jpg" class="amz-img" /></a>
+  </div>
+  <div class="amz-right" style="overflow:hidden;">
+    <div class="amz-title" style="margin-bottom:20px;">
+      <a href="http://www.amazon.co.jp/exec/obidos/ASIN/4798118338/meganii-22/ref=nosim/" rel="nofollow" target="_blank">エンジニアのための文章術再入門講座</a>
+    </div>
+    <div class="amz-detail">
+      <div class="amz-info1" style="white-space:nowrap;">芦屋 広太</div>
+      <div class="amz-info2" style="white-space:nowrap;">翔泳社 2009-02-20</div>
+      <div class="amz-price" style="white-space:nowrap;">￥ 2,310</div>
+      <div class="amz-link" style="margin-top:20px;"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/4798118338/meganii-22/ref=nosim/" rel="nofllow" target="_blank">Amazon.co.jp で詳細を見る</a></div>
+    </div>
+  </div>
+</div>

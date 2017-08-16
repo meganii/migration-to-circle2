@@ -1,0 +1,92 @@
+---
+
+title: さくらVPSにJenkinsインストール
+date: 2013-04-11T00:08:00+09:00
+category: ['Tech']
+tags: ['jenkins']
+published: true
+slug: jenkins
+---
+
+<a href="http://ameblo.jp/wataru420/entry-11197225860.html" target="_blank"><img class="alignleft" align="left" border="0" src="http://capture.heartrails.com/150x130/shadow?http://ameblo.jp/wataru420/entry-11197225860.html" alt="" width="150" height="130" /></a><a style="color:#0070C5;" href="http://ameblo.jp/wataru420/entry-11197225860.html" target="_blank">Jenkinsで定期実行するJobを管理したほうが良い３つの理由｜Pimp my Code. @wataru420</a><a href="http://b.hatena.ne.jp/entry/http://ameblo.jp/wataru420/entry-11197225860.html" target="_blank"><img border="0" src="http://b.hatena.ne.jp/entry/image/http://ameblo.jp/wataru420/entry-11197225860.html" alt="" /></a><br style="clear:both;" /><br>
+
+定期実行させるJobを無理矢理作って、Jenkinsを触ってみる。
+
+- 今までCronで動かしていた天気Bot
+- Jekyll フォルダ監視(とかできたらしてみたい)
+
+とかちょっとやってみたいと思い、Jenkinsインストール。
+
+
+{{% googleadsense %}}
+
+### JDKインストール
+http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html
+
+jdk-7u17-linux-x64.rpm をダウンロード。
+
+がしかし、うまくダウンロード&インストールできなかったので、yumでインストールするゆとり系男子。
+
+```
+yum list \*java-1\* | grep open
+```
+
+```
+yum install java-1.7.0-openjdk.x86_64 
+yum install java-1.7.0-openjdk-devel.x86_64 
+```
+
+### jenkinsインストール
+
+```
+sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo
+sudo rpm --import http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
+yum install jenkins
+```
+
+### Jenkinsが使うPortを開ける
+
+```
+vim /etc/sysconfig/iptables
+```
+
+Jenkinsのデフォルトで使用するポート(デフォルトは8080)を開けるため、以下の1行を追加する。
+(以下は、ポート 9999を使うとした場合)
+
+```
+-A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 9999  -j ACCEPT
+```
+
+
+iptablesを適用する
+
+```
+/etc/rc.d/init.d/iptables restart
+```
+
+Jenkins起動
+
+```
+service jenkins start
+```
+<a href="http://www.flickr.com/photos/35571855@N06/8637967282/in/photostream" title="Jenkins by 35571855@N06, on Flickr"><img src="http://farm9.staticflickr.com/8241/8637967282_86cb181a2d.jpg" width="400" /></a>
+
+Jenkinsさんが登場。このままだと誰でもログイン出来てしまうので、セキュリティの設定をする。
+
+### セキュリティの設定
+<a href="http://www.yaunix.com/2013/02/04/%E3%81%95%E3%81%8F%E3%82%89vps%E3%81%A7jenkins%E3%82%92%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97%E3%81%97%E3%80%81%E8%AA%8D%E8%A8%BC%E3%82%92%E8%A1%8C%E3%81%86%E3%81%BE%E3%81%A7/" target="_blank"><img class="alignleft" align="left" border="0" src="http://capture.heartrails.com/150x130/shadow?http://www.yaunix.com/2013/02/04/%E3%81%95%E3%81%8F%E3%82%89vps%E3%81%A7jenkins%E3%82%92%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97%E3%81%97%E3%80%81%E8%AA%8D%E8%A8%BC%E3%82%92%E8%A1%8C%E3%81%86%E3%81%BE%E3%81%A7/" alt="" width="150" height="130" /></a><a style="color:#0070C5;" href="http://www.yaunix.com/2013/02/04/%E3%81%95%E3%81%8F%E3%82%89vps%E3%81%A7jenkins%E3%82%92%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97%E3%81%97%E3%80%81%E8%AA%8D%E8%A8%BC%E3%82%92%E8%A1%8C%E3%81%86%E3%81%BE%E3%81%A7/" target="_blank">さくらVPSでJenkinsをセットアップし、認証を行うまで | ひたすらメモするだけのブログ</a><a href="http://b.hatena.ne.jp/entry/http://www.yaunix.com/2013/02/04/%E3%81%95%E3%81%8F%E3%82%89vps%E3%81%A7jenkins%E3%82%92%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97%E3%81%97%E3%80%81%E8%AA%8D%E8%A8%BC%E3%82%92%E8%A1%8C%E3%81%86%E3%81%BE%E3%81%A7/" target="_blank"><img border="0" src="http://b.hatena.ne.jp/entry/image/http://www.yaunix.com/2013/02/04/%E3%81%95%E3%81%8F%E3%82%89vps%E3%81%A7jenkins%E3%82%92%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97%E3%81%97%E3%80%81%E8%AA%8D%E8%A8%BC%E3%82%92%E8%A1%8C%E3%81%86%E3%81%BE%E3%81%A7/" alt="" /></a><br style="clear:both;" /><br>
+
+上記のページを参考にさせてもらって、設定。
+
+```
+/etc/httpd/conf/httpd.conf
+```
+のバーチャルホストあたりを変更。
+
+ひとまずここまで、
+次はJobの作成と実行。
+
+### 参考
+- [JDK 7u7をCentOSにインストールする手順 - memo.yomukaku.net](http://memo.yomukaku.net/entries/UhgMUdw)
+- <a href="http://cns-guide.sfc.keio.ac.jp/2004/2/6/2.html">6.2 scpコマンドを使ったファイルの転送</a>
+- [Jenkins](http://itref.fc2web.com/technology/jenkins.html)

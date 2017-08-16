@@ -1,0 +1,98 @@
+---
+
+title: "Macのsedで改行コードを出力させる 〜改行コードの違い再確認〜"
+date: 2014-11-25T22:55:00+09:00
+comments: true
+category: ['Tech']
+tags: ['unix','jekyll']
+published: true
+slug: sed-cr-lf
+---
+
+
+Octpressで各ブログ記事に利用していた\<!--more--\>を一括置換するときに、ハマった話。
+
+以下のように、\<!--more--\>を置換しようとしたのが、
+
+- `!`のエスケープ
+- 改行コードの出力
+
+でハマった。
+
+
+
+{{% googleadsense %}}
+
+
+### 置換前
+
+```
+\<!--more--\>
+```
+
+### 置換後
+
+```
+\<!--more--\>
+{% include hogehoge.html %}
+```
+
+## `!`のエスケープ
+
+まず、`!`は過去の実行コマンドを参照するコマンドのため、置換文字列に含まれると意図しない動きをしてしまう。
+
+⇛　`\!` とエスケープすることで解決
+
+## 改行コードの出力
+
+Macのsedコマンドでは、例えば、以下のように`\n`を改行コードに置換しようと思っても、全然意図する動きにならない。
+
+```
+echo "hogehoge\nfoo\nbar" | sed 's/\\n/\n/g'
+```
+
+正しく置換させるためには、以下のようにする必要があるとのこと。
+
+```
+LF=$'\\\x0A'
+echo "hogehoge\nfoo\nbar" | sed 's/\\n/'"$LF"'/g'
+```
+
+
+## CR LF CR+LFの違い
+
+改行コードの復習も兼ねて調べておく
+
+### キャリッジリターン(Carriage Return 復帰 : CR（0x0d))
+
+- 行頭へ印字ヘッドあるいはカーソルを移動すること。
+
+OS9までのMacOSは、CRを改行コードと解釈していた(裏取りなし)
+
+### ラインフィード(Line Feed 改行 LF（0x0a))
+
+- 次の行へ一行移動する。
+
+UNIX環境は、LFを改行コードと解釈する
+(OSXも同様)
+
+### CRLF 0x0d0a
+
+Windows環境は、CR LFを改行コードとして解釈する
+
+## 実行したかったコマンド
+
+markdownファイルの中の、\<!--more--\>タグを置換する
+
+
+{{ find . -name "*.markdown" | xargs sed -i '' 's/<!--more-->/<!--more-->'"$LF"'\{\{% googleadsense %\}\}/g | safeHTML }}
+
+
+## 参考
+
+<a href="http://rcmdnk.github.io/blog/2014/09/21/computer-bash/" target="_blank"><img class="alignleft" align="left" border="0" src="http://capture.heartrails.com/150x130/shadow?http://rcmdnk.github.io/blog/2014/09/21/computer-bash/" alt="" width="150" height="130" /></a><a style="color:#0070C5;" href="http://rcmdnk.github.io/blog/2014/09/21/computer-bash/" target="_blank">sedで改行を出力する - rcmdnk’s blog</a><a href="http://b.hatena.ne.jp/entry/http://rcmdnk.github.io/blog/2014/09/21/computer-bash/" target="_blank"><img border="0" src="http://b.hatena.ne.jp/entry/image/http://rcmdnk.github.io/blog/2014/09/21/computer-bash/" alt="" /></a><br style="clear:both;" /><br>
+
+
+<a href="http://www.japanlink.co.jp/dtpjiten/ka/kaigyocode.html" target="_blank"><img class="alignleft" align="left" border="0" src="http://capture.heartrails.com/150x130/shadow?http://www.japanlink.co.jp/dtpjiten/ka/kaigyocode.html" alt="" width="150" height="130" /></a><a style="color:#0070C5;" href="http://www.japanlink.co.jp/dtpjiten/ka/kaigyocode.html" target="_blank">図解DTP用語辞典</a><a href="http://b.hatena.ne.jp/entry/http://www.japanlink.co.jp/dtpjiten/ka/kaigyocode.html" target="_blank"><img border="0" src="http://b.hatena.ne.jp/entry/image/http://www.japanlink.co.jp/dtpjiten/ka/kaigyocode.html" alt="" /></a><br><span style="color: #808080;font-size: 80%;">改行コードの違い  日本語組版でいう改行は、行を改めて次の行の初めから文字を組み始めることである。しかし欧文組版では、タイプライターの操作メカニズムの制約から日本語の改行に当たる操作は２段階に分かれ、 ...</span><br style="clear:both;" /><br>
+
+[改行コードの違いを体感してみる - ザリガニが見ていた...。](http://d.hatena.ne.jp/zariganitosh/20131115/diff_cr_lf_feeling)

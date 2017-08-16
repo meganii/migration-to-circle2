@@ -1,0 +1,60 @@
+DefaultContentLanguage: "ja"
+
+title: "SIS Lab"
+baseURL: "https://www.meganii.com/"
+permalinks:
+  blog: "/blog/:year/:month/:day/:slug/"
+
+blackfriday:
+  hrefTargetBlank: true
+
+Languages:
+  ja:
+    LanguageCode: 'ja'
+    lang: ""
+    title: "SIS Lab"
+    profile: "ギークを夢見るじょーぶん男子。「広く浅くから広く深く」を目指してブログを書いています。"
+    description: "元じょーぶん生によるメーカー系SIerブログ。趣味のプログラミング、旅行。日々、学んだことについて書きます。"
+  en:
+    LanguageCode: 'en'
+    lang: "en/"
+    title: "SIS Lab"
+    profile: "I'm Software Engineer in Tokyo."
+    description: "I write about programming, traveling and studying."
+    weight: 2
+    params:
+      linkedin: "english-link"
+    permalinks:
+      blog: "/blog/en/:year/:month/:day/:slug/"
+
+contentDir: "content"
+publishDir: "public"
+cacheDir: "cache"
+rssuri: "feed.xml"
+enableGitInfo: true
+
+Params:
+  Author: "meganii"
+  Birth: "Sun, March 3, 1988"
+  DateForm: "Mon, Jan 2, 2006"
+  GoogleAnalyticsUserID: "UA-55005303-5"
+  Twitter: "meganii"
+  Github: "https://github.com/meganii"
+  ShowTagCloud: True
+  ShowRelatedPost: True
+  Disqus: "meganii"
+  SyntaxHighlightTheme: "solarized_dark.min.css"
+  logo: "/images/meganii_logo.png"
+  AnalyticsURL: "https://us-central1-cloud-api-2e3ec.cloudfunctions.net/function-1"
+
+MetadataFormat: "yaml"
+
+taxonomies:
+  tag: "tags"
+  category: "category"
+
+author:
+    name: "meganii"
+    homepage: "https://www.meganii.com/"
+
+Copyright:

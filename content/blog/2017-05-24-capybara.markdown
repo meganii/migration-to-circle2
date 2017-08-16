@@ -1,0 +1,71 @@
+---
+title: "capybara"
+date: 2017-05-24T00:00:38+09:00
+lastmod: 2017-05-24T00:00:38+09:00
+comments: true
+category: ['']
+tags: ['']
+published: false
+slug: capybara
+img:
+---
+
+<!--more-->
+{{% googleadsense %}}
+
+[とある業務オペレーション自動化の話 // Speaker Deck](https://speakerdeck.com/onigra/toaruye-wu-operesiyonzi-dong-hua-falsehua)
+
+
+```ruby
+class WorkerSession
+
+  attr_reader :session
+
+  def initialise
+    tempfile = Tempfile.new(prefix, path)
+
+    Capybara.register_driver :poltergeist do |app|
+      Capybara::Poltergeist::Driver.new(
+        app,
+        phantomjs_options: [
+          "--cookies-file=#{tempfile}",
+        ]
+      )
+    end
+
+    @session = Capybara::Session.new(:poltergeist)
+  end
+end
+```
+
+
+```ruby
+class ExampleRunner
+  def initialise(param)
+    @param = param
+    @capybara = WorkerSession.new
+  end
+
+  def run
+    login
+    access_to_checkout
+    select_sipping_method
+    select_payment_method
+    submit
+  ensure
+    logout
+    delete_session
+  end
+end
+```
+
+```ruby
+class ExapmpleWorker
+  include Sidekiq::Worker
+  sidekiq_options queue: :expamle
+
+  def perform(param)
+    ExampleRunner.new(param).run
+  end
+end
+```

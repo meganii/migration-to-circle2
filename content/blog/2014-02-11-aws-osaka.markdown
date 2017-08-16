@@ -1,0 +1,84 @@
+---
+title: JAWS-UG Osaka第10回 AWSとコストについて ～AWSをなるべく安く使い倒す〜
+date: 2014-02-11T19:58:00+09:00
+category: ['Tech']
+tags: ['aws','JAWS-UG']
+published: true
+slug: aws-osaka
+---
+
+<a href="http://jawsugosaka.doorkeeper.jp/events/7484" target="_blank"><img class="alignleft" align="left" border="0" src="http://capture.heartrails.com/150x130/shadow?http://jawsugosaka.doorkeeper.jp/events/7484" alt="" width="150" height="130" /></a><a style="color:#0070C5;" href="http://jawsugosaka.doorkeeper.jp/events/7484" target="_blank">JAWS-UG Osaka 第10回勉強会 2014年1月30日(木) - JAWS-UG大阪 | Doorkeeper</a><a href="http://b.hatena.ne.jp/entry/http://jawsugosaka.doorkeeper.jp/events/7484" target="_blank"><img border="0" src="http://b.hatena.ne.jp/entry/image/http://jawsugosaka.doorkeeper.jp/events/7484" alt="" /></a><br style="clear:both;" /><br>
+
+最近、Amazon Web Servicesに触れる機会があり、AWSのコストの考え方をちょっとでも聞きかじってこようと参加してきました。
+聞いててポイントをまとめてます。
+
+
+## オンプレ脳からの脱却
+
+すべてをEC2で実装した場合⇛ 120万
+そこからサービスとして存在するものについては、AWSのサービスを使うようにしていけば、コストを下げることができる。
+
+*EC2を使ったら負け*
+
+1. ELB化
+2. Backupを S3に
+3. DNS をRoute53に変更
+4. メール
+5. VPN ⇛ VPC
+6. EBS削除
+7. Webサーバ AS化
+8. CloudFormation
+9. リザーブドインスタンスの利用
+
+### ポイント
+
+- マネージドサービスを活用すること
+- こまめに停止する
+- リザーブド、スポットのインスタンスを利用すること
+
+
+## リージョンによる価格の違い
+
+日本のリージョンは、やはり高いみたい。
+
+リージョンごとの料金の比較
+<a href="http://d.hatena.ne.jp/dkfj/20140204" target="_blank"><img class="alignleft" align="left" border="0" src="http://capture.heartrails.com/150x130/shadow?http://d.hatena.ne.jp/dkfj/20140204" alt="" width="150" height="130" /></a><a style="color:#0070C5;" href="http://d.hatena.ne.jp/dkfj/20140204" target="_blank">2014-02-04 - プログラマになりたい</a><a href="http://b.hatena.ne.jp/entry/http://d.hatena.ne.jp/dkfj/20140204" target="_blank"><img border="0" src="http://b.hatena.ne.jp/entry/image/http://d.hatena.ne.jp/dkfj/20140204" alt="" /></a><br style="clear:both;" /><br>
+
+
+## 金額通知サービス
+
+AWS billing alerts っていう金額通知サービスがあるので、うまく活用するとよい。
+
+## S3の使い方の注意 GETとPUTの単価が桁違い
+
+- 細かい単位で保存(アップロード)するより、できるだけ大きな単位(上限5GB)で保存すること
+- なぜなら、GETと違ってPUTのリクエスト当たりの単価は文字通り桁違いだから
+
+## AWSの一括決済
+
+- 支払アカウントを作って、利用しているすべてのサイトを支払アカウントにひもづけることで、ボリューム割を受けることが出来る
+- 提供サービス毎の金額を把握することが出来る。
+
+
+## スケジューリングベースのAutoScaling
+
+*ログは常に、リモートログに！*
+
+- AutoScalingで、自動的にインスタンスが停止、起動するため、ローカルにログを出力しても永続化できない
+- だから、ログはリモートに出力することが大事
+
+- AutoScalingで気をつける点は、前提条件の合わせ方。ブートストラップの考え方が重要になってくる
+- どこまで、AMIに含めるか、モジュールをどうやって最新にするか？
+
+
+## リザーブドインスタンスのポイント
+
+- 稼働率の高い
+- 最低限
+- キャパシティを予約
+
+注意　「先にお金を払った後は、金額が発生しない。」というのは間違い。
+
+リザーブドインスタンスは、利用枠を買うと思った方がよい。
+ディザスタリカバリ(DR)先としてAWSを利用する場合は、リザーブドインスタンスにすべきである。
+なぜならば、DRが発生する際というのは、災害が発生して、ほかの人も同じようにインスタンスを立ち上げる可能性が高い。その場合、インスタンスが割当たらないリスクが発生するため。

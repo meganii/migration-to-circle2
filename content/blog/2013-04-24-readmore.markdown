@@ -1,0 +1,40 @@
+---
+
+title: Octopressに「続きを読む」のプラグイン導入
+date: 2013-04-24T20:16:00+09:00
+category: ['Tech']
+tags: ['jekyll']
+published: true
+slug: readmore
+---
+
+<a href="http://www.flickr.com/photos/35571855@N06/8678092756/" title="postmore.rb — octopress by upload, on Flickr"><img src="http://farm9.staticflickr.com/8390/8678092756_5af15344bf_m.jpg" width="200" /></a>
+
+↓こんな感じで「続きを読む」ように、記事を折りたたむプラグインを導入。
+
+
+
+{{% googleadsense %}}
+
+Octopressなら、/plagins ディレクトリに 以下の postmore.rbを設定する。
+
+```
+module PostMore
+	def postmorefilter(input, url, text)
+		if input.include? "
+{{% googleadsense %}}"
+			input.split("
+{{% googleadsense %}}").first + "<p class='more'><a href='#{url}'>#{text}</a></p>"
+		else
+			input
+		end
+	end
+end
+
+Liquid::Template.register_filter(PostMore)
+```
+
+
+### 参考
+- [WordPressよりjekyllで本格的ブログを作りたくなる、かもしれないまとめ | ゆっくりと…](http://tokkono.cute.coocan.jp/blog/slow/index.php/programming/making-blog-with-jekyll/)
+- [Creating Excerpts in Jekyll with Wordpress-style &lt;!--more--&gt; HTML Comments - Jacques Fortier](http://www.jacquesf.com/2011/03/creating-excerpts-in-jekyll-with-wordpress-style-more-html-comments/)

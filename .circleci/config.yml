@@ -49,6 +49,7 @@ jobs:
           name: run tests
           command: |
             python script/vectorize_text.py
+            hugo -t hugo-zen
 
       - store_artifacts:
           path: test-reports

@@ -1,0 +1,55 @@
+---
+title: "Hugo-ZenをベースにHugoのデザインを変えてみた"
+date: 2016-04-17T19:57:49+09:00
+comments: true
+category: ['Tech']
+tags: ['hugo','design']
+published: true
+slug: hugo-zen
+img: '/images/hugo_s.png'
+---
+
+春になったので、BlogのデザインをHugoをベースに変えてみました。
+
+前々から、自分で構造を把握したい、jQueryに依存するBootstrapをやめたいって思っていたので、Hugoの中でもミニマムなテーマであるHugo-Zenをベースに構築しました。
+
+{{% googleadsense %}}
+
+## hugo-zen
+
+[Hugo Zen: これから Hugo を始める人向けのミニマムなテーマを作りました - rakuishi.com](http://rakuishi.com/archives/hugo-zen/)
+[GitHub - rakuishi/hugo-zen: Hugo Zen is a minimal hugo theme.](https://github.com/rakuishi/hugo-zen)
+
+気に入ったポイントは、以下の点。
+
+- ごちゃごちゃしてなく、シンプル！
+- Skeletonという軽量のCSSフレームワークを利用 http://getskeleton.com/
+- jQuery不要
+
+一旦、シンプルに構築できたので、ここから気になるところをちょっとずつ変えていきます。
+
+
+## faviconの生成
+
+[様々なファビコンを一括生成。favicon generator](http://ao-system.net/favicongenerator/)
+
+上記のWebサービスを利用してファビコンを作成してみました。これだけ用意しないと対応できないなんて何か間違ってる気がしなくもないけど、おとなしく追加しました。
+
+
+[綺麗なfavicon（ファビコン）作成の基本的なコツ・アイデアまとめ | 株式会社LIG](http://liginc.co.jp/web/design/material/16853) によると、16px × 16px 、32px × 32px のふたつをマルチアイコンにすればO.K.という話もあったので、試してみたい。
+
+
+## 関連記事をどうするか問題
+
+Wordpressのような動的に記事を生成する機構に比べて、静的サイトは関連記事をどう表示するかが結構悩みどころだったりします。前のデザインだと、同じカテゴリの記事を表示するというシンプルな方法だったので、まずは同じように設置しました。
+
+理想は、機械的に記事同士の相関を判断して出力してほしいので、Hugo(Golang?)で実現するか、JavaScriptを書いてなんとか実現するかやってみたい。
+
+
+## 残りやりたいこと
+
+- 関連記事をうまいこと出す
+- サイドバーを充実させる
+- AMP対応
+- 常時SSL対応(img)
+- 静的ファイルの最適化

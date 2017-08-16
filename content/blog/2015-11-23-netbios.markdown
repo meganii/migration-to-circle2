@@ -1,0 +1,37 @@
+---
+title: "NetBIOSとは？"
+date: 2015-11-23T21:06:57+09:00
+comments: true
+category: ['Tech']
+tags: ['Windows']
+published: true
+slug: netbios
+---
+
+{{% googleadsense %}}
+
+
+## NetBIOSとは？
+
+昔　Windowsネットワークのベースになっているもの。  
+　　NetBIOS名でやりとりをしていた。
+
+今　NetBIOS over TCP/IP  
+TCP/IPの上でNetBIOSのAPIを出来るようにした。  
+⇛　Active DirectoryでDNSを導入  
+
+
+## Unix系は？ ⇛　TCP/IP
+
+
+昔　hostsファイルに、IPアドレスとホスト名を記述していた。  
+　　ひとつひとつのコンピュータに定義しなければいけなかった。
+
+今　DNSによるホスト名とIPアドレスの変換
+
+
+NetBIOSとは、NetBEUI(プロトコル・スタック)+NetBIOS(API)という過去の技術を継承するために残っているもの。
+
+
+## 参考
+- [NETBIOS名とホスト名の違い | Windowsインフラ管理者への道](http://ebi.dyndns.biz/windowsadmin/2009/02/10/netbios%e5%90%8d%e3%81%a8%e3%83%9b%e3%82%b9%e3%83%88%e5%90%8d%e3%81%ae%e9%81%95%e3%81%84/)

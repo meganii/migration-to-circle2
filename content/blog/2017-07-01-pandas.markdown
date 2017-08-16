@@ -1,0 +1,47 @@
+---
+title: "pandas"
+date: 2017-07-01T06:35:51+09:00
+lastmod: 2017-07-01T06:35:51+09:00
+comments: true
+category: ['']
+tags: ['']
+published: false
+slug: pandas
+img:
+---
+
+<!--more-->
+{{% googleadsense %}}
+
+```python
+import pandas as pd
+
+df = pd.read_csv('yahoo.csv')
+print(df.info())
+```
+
+```
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 673 entries, 0 to 672
+Data columns (total 6 columns):
+file_nm       673 non-null object
+element_id    673 non-null object
+amount        673 non-null object
+unit_ref      0 non-null float64
+decimals      535 non-null float64
+contextref    673 non-null object
+dtypes: float64(2), object(4)
+memory usage: 31.6+ KB
+```
+
+
+```
+df[df.contextref=='CurrentYearDuration'][['element_id','decimals','amount']].head(10)
+```
+
+yahoo.csv
+```csv
+file_nm,element_id,amount,unit_ref,decimals,contextref
+jpcrp030000-asr-001_E05000-000_2016-03-31_01_2016-06-20.xbrl,jpdei_cor:numberofsubmissiondei,1,,0,FilingDateInstant
+jpcrp030000-asr-001_E05000-000_2016-03-31_01_2016-06-20.xbrl,jpcrp_cor:revenueifrssummaryofbusinessresults,408514000000,,-6,Prior2YearDuration
+```

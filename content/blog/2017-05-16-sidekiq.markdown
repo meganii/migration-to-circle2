@@ -1,0 +1,73 @@
+---
+title: "sidekiq"
+date: 2017-05-16T23:51:41+09:00
+lastmod: 2017-05-16T23:51:41+09:00
+comments: true
+category: ['']
+tags: ['']
+published: false
+slug: sidekiq
+img:
+---
+
+<!--more-->
+{{% googleadsense %}}
+
+- 基本的にUTCで考える
+
+## assetsが表示されない
+
+原因
+
+-  nginxのコンテナが間違っていた
+
+問題解決のために参考にしたサイト
+[Rails Asset Pipelineがうまくいかないときの問題の切り分けかた \- Qiita](http://qiita.com/metheglin/items/c5c756246b7afbd34ae2)
+
+
+nginx.confを参考にしたプロジェクト
+[ledermann/docker\-rails: Dockerized example Rails application using Yarn, ActionCable, Elasticsearch and Sidekiq](https://github.com/ledermann/docker-rails)
+
+## Cronの置き換え
+
+`sidekiq-scheduler`を導入した。
+https://github.com/moove-it/sidekiq-scheduler
+
+
+## Rails × Dockerで参考にしたサイト
+
+- [ledermann/docker\-rails: Dockerized example Rails application using Yarn, ActionCable, Elasticsearch and Sidekiq](https://github.com/ledermann/docker-rails)
+- [Dockerize a Rails 5, Postgres, Redis, Sidekiq and Action Cable Application with Docker Compose — Nick Janetakis](https://nickjanetakis.com/blog/dockerize-a-rails-5-postgres-redis-sidekiq-action-cable-app-with-docker-compose)
+
+
+## Timezone周り
+
+[【Linux】タイムゾーン\(Timezone\)の変更 \- Qiita](http://qiita.com/azusanakano/items/b39bd22504313884a7c3)
+
+[Docker コンテナの時刻同期\(時刻データ\)について \- Qiita](http://qiita.com/hirotaka-tajiri/items/f5900b236a005d7ffe58)
+
+[Schedule rails jobs in your users timezone \(Example\)](https://coderwall.com/p/8gpspg/schedule-rails-jobs-in-your-users-timezone)
+
+## Ruby Style Guide
+
+[fortissimo1997/ruby\-style\-guide: A community\-driven Ruby coding style guide \(Japanese\)](https://github.com/fortissimo1997/ruby-style-guide)
+
+[Rubyによるデザインパターン5原則 \- Qiita](http://qiita.com/kidach1/items/4b63de9ad5a97726c50c)
+
+## DataDogによる監視
+
+DataDogのインストールがすこぶる楽チン
+
+dokerコマンドを叩くだけ
+
+
+## 参考
+
+[sidekiqの使い方 \- Qiita](http://qiita.com/nysalor/items/94ecd53c2141d1c27d1f)
+
+
+## 疑問点
+
+せっかくコンテナで、サービス単位で管理ができるにも関わらず、docker-composeを利用してコンテナを立ち上げるのはなんだかもどかしい。
+
+そのほかのやり方はないのだろうか？

@@ -1,0 +1,54 @@
+---
+title: 学びの螺旋にはっと気づく
+date: 2012-02-01
+category: ['Tech']
+tags: ['学び','Study']
+published: true
+slug: learn
+---
+
+<a href="http://d.hatena.ne.jp/meganii/20110221/1298292184" target="_blank"><img class="alignleft" align="left" border="0" src="http://capture.heartrails.com/150x130/shadow?http://d.hatena.ne.jp/meganii/20110221/1298292184" alt="" width="150" height="130"></a><a style="color:#0070C5;" href="http://d.hatena.ne.jp/meganii/20110221/1298292184" target="_blank">プログラマが知るべき、たったひとつの大事なことがら -DeveloperSummit2011に行ってきました!!- - ギークを夢見るじょーぶん男子</a><a href="http://b.hatena.ne.jp/entry/http://d.hatena.ne.jp/meganii/20110221/1298292184" target="_blank"><img border="0" src="http://b.hatena.ne.jp/entry/image/http://d.hatena.ne.jp/meganii/20110221/1298292184" alt=""></a><br><span style="color: #808080;font-size: 80%;">学びは「らせん」である。  同じところに帰って来たと思ってても、絶対に「差分」がある。この差分が暗黙知として蓄積されている。  また、新しい技術でも、既存の技術と同じようなものもある。そのような場合も ...</span><br><strong>巡り巡って戻ってきたときにハッとこの話を思い出した</strong><br style="clear:both;"><br>
+
+<p>
+  Ruby, Rails, Python,Django、Sinatraをちょっとずつかじってきて、ようやく一周してきてみると、ちょっと違う景色がありました。巡り巡って、同じところに戻ってきたと思っても、ちょっとずつ「差分」があったみたい。
+</p>
+
+
+<p>
+  前は、何をやってるかまったくわかってなかったコードがちょっとずつわかってくる。昔は、ActiveRecord、Rakeが何をやってるかまったくわかってなかったけど、ちょっと見えてきた。わかってくると同時に、その凄さにも気づいた。
+</p>
+
+<a href="https://github.com/rewish/Shibastagram">Shibastagram</a>
+
+<br>
+<br>
+<br>
+
+<h3>知れば知る程、凄さがちょっとわかってくる</h3>
+<p>
+  今までは、動いたーっていうレベルだったけど、ちょっとずつわかってくると、その凄さもわかってくる。
+</p>
+
+<p>
+  触って楽しむレベルから、何かを作り出せる楽しさまで進めるといいな。
+</p>
+
+
+<br>
+<br>
+<div class="amz-container" style="overflow:hidden;margin-bottom:20px;">
+  <div class="amz-left" style="float:left; margin:0 20px 0;">
+    <a href="http://www.amazon.co.jp/exec/obidos/ASIN/4873114799/meganii-22/ref=nosim/" rel="nofollow" target="_blank"><img src="https://images-na.ssl-images-amazon.com/images/I/511RPej0BNL._SL160_.jpg" class="amz-img"></a>
+  </div>
+  <div class="amz-right" style="overflow:hidden;">
+    <div class="amz-title" style="margin-bottom:20px;">
+      <a href="http://www.amazon.co.jp/exec/obidos/ASIN/4873114799/meganii-22/ref=nosim/" rel="nofollow" target="_blank">プログラマが知るべき97のこと</a>
+    </div>
+    <div class="amz-detail">
+      <div class="amz-info1" style="white-space:nowrap;"></div>
+      <div class="amz-info2" style="white-space:nowrap;">オライリージャパン 2010-12-18</div>
+      <div class="amz-price" style="white-space:nowrap;">￥ 1,995</div>
+      <div class="amz-link" style="margin-top:20px;"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/4873114799/meganii-22/ref=nosim/" rel="nofllow" target="_blank">Amazon.co.jp で詳細を見る</a></div>
+    </div>
+  </div>
+</div>

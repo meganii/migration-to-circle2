@@ -1,0 +1,20 @@
+---
+title: "promise"
+date: 2017-08-13T13:15:39+09:00
+lastmod: 2017-08-13T13:15:39+09:00
+comments: true
+category: ['']
+tags: ['']
+published: false
+slug: promise
+img:
+---
+
+<!--more-->
+{{% googleadsense %}}
+
+- Promiseが理解できてない
+http://azu.github.io/promises-book/
+
+- ES2015, babel
+- node index.jsで動かないのはなぜ？

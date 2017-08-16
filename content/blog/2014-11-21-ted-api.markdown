@@ -1,0 +1,207 @@
+---
+
+title: "TED APIを触ってみる"
+date: 2014-11-21T22:34:00+09:00
+comments: true
+category: ['Tech']
+tags: ['api','ted']
+published: true 
+slug: ted-api
+---
+
+<a href="http://developer.ted.com/" target="_blank"><img class="alignleft" align="left" border="0" src="http://capture.heartrails.com/150x130/shadow?http://developer.ted.com/" alt="" width="150" height="130" /></a><a style="color:#0070C5;" href="http://developer.ted.com/" target="_blank">TED - Welcome to TEDLabs</a><a href="http://b.hatena.ne.jp/entry/http://developer.ted.com/" target="_blank"><img border="0" src="http://b.hatena.ne.jp/entry/image/http://developer.ted.com/" alt="" /></a><br style="clear:both;" /><br>
+
+いつのまにかTEDのAPIが公開されていたので、少し触ってみる。
+
+
+
+{{% googleadsense %}}
+
+
+
+昔は、APIが公開されてなかったので、スクレイピングで取得していた。
+(htmlの構造が今は変わってるので、以下のコードでは取得できません)
+
+<a href="http://d.hatena.ne.jp/meganii/20120320/1332214416" target="_blank"><img class="alignleft" align="left" border="0" src="http://capture.heartrails.com/150x130/shadow?http://d.hatena.ne.jp/meganii/20120320/1332214416" alt="" width="150" height="130" /></a><a style="color:#0070C5;" href="http://d.hatena.ne.jp/meganii/20120320/1332214416" target="_blank">TEDの英語原稿を取得する - ギークを夢見るじょーぶん男子</a><a href="http://b.hatena.ne.jp/entry/http://d.hatena.ne.jp/meganii/20120320/1332214416" target="_blank"><img border="0" src="http://b.hatena.ne.jp/entry/image/http://d.hatena.ne.jp/meganii/20120320/1332214416" alt="" /></a><br style="clear:both;" /><br>
+
+
+```ruby
+require 'rubygems'
+require 'open-uri'
+require 'json'
+require 'nokogiri'
+
+url = "http://www.ted.com/talks/brene_brown_listening_to_shame.html"
+doc = Nokogiri::HTML(open(url))
+
+ted_id = doc.xpath("//div[@id='share_and_save']").first.attribute("data-id")
+
+open("http://www.ted.com/talks/subtitles/id/#{ted_id}/lang/en") do |f|
+  json = JSON.parse(f.read)
+  json['captions'].each do |j|
+    puts j['content']
+  end
+end
+```
+
+TED APIを使い、以下のエンドポイント(言い方あってる？)を叩くと、結果がjsonで返ってくる。
+
+```html
+https://api.ted.com/v1/talks.json?api-key=#{TED_API}&filter=slug:matt_cutts_try_something_new_for_30_day
+```
+
+この id が、動画の固有IDになる。すばらしい。
+
+```json
+{"talks":
+  [{"talk":
+    {"id":1183,
+     "event_id":64,
+     "name":"Matt Cutts: Try something new for 30 days",
+     "description":"Is there something you've always meant to do, wanted to do, but just ... haven't? Matt Cutts suggests: Try it for 30 days. This short, lighthearted talk offers a neat way to think about setting and achieving goals.",
+     "slug":"matt_cutts_try_something_new_for_30_days",
+     "native_language_code":"en",
+     "published_at":"2011-07-01 15:14:00",
+     "recorded_at":"2011-03-03 00:00:00",
+     "updated_at":"2014-11-12 20:04:29",
+     "released_at":"2014-11-12 20:04:29"}}],
+    "counts":{"this":1,"total":1}
+}
+```
+
+
+
+## ドキュメント
+
+メモ書き程度に書き散らかす。
+
+<a href="http://developer.ted.com/io-docs" target="_blank"><img class="alignleft" align="left" border="0" src="http://capture.heartrails.com/150x130/shadow?http://developer.ted.com/io-docs" alt="" width="150" height="130" /></a><a style="color:#0070C5;" href="http://developer.ted.com/io-docs" target="_blank">TED I/O Docs</a><a href="http://b.hatena.ne.jp/entry/http://developer.ted.com/io-docs" target="_blank"><img border="0" src="http://b.hatena.ne.jp/entry/image/http://developer.ted.com/io-docs" alt="" /></a><br style="clear:both;" /><br>
+
+
+### Events
+
+TEDのイベントがあった箇所を取得する
+{
+    "event": {
+        "id": 1,
+        "name": "TED2008",
+        "description": "",
+        "header_text": "",
+        "slug": "2008",
+        "url": "",
+        "starts_at": "2008-02-27 00:00:00"
+    }
+}
+
+### Ratings
+
+ランキング？
+
+
+
+### Rating Words
+
+投票するときの、表現？
+
+{
+    "rating_words": [{
+        "rating_word": {
+            "id": 1,
+            "name": "Beautiful"
+        }
+    }, {
+        "rating_word": {
+            "id": 2,
+            "name": "Confusing"
+        }
+    }, {
+        "rating_word": {
+            "id": 3,
+            "name": "Courageous"
+        }
+    }, {
+        "rating_word": {
+            "id": 7,
+            "name": "Funny"
+        }
+    }, {
+        "rating_word": {
+            "id": 8,
+            "name": "Informative"
+        }
+    }, {
+        "rating_word": {
+            "id": 9,
+            "name": "Ingenious"
+        }
+    }, {
+        "rating_word": {
+            "id": 10,
+            "name": "Inspiring"
+        }
+    }, {
+        "rating_word": {
+            "id": 11,
+            "name": "Longwinded"
+        }
+    }, {
+        "rating_word": {
+            "id": 21,
+            "name": "Unconvincing"
+        }
+    }, {
+        "rating_word": {
+            "id": 22,
+            "name": "Fascinating"
+        }
+    }, {
+        "rating_word": {
+            "id": 23,
+            "name": "Jaw-dropping"
+        }
+    }, {
+        "rating_word": {
+            "id": 24,
+            "name": "Persuasive"
+        }
+    }, {
+        "rating_word": {
+            "id": 25,
+            "name": "OK"
+        }
+    }, {
+        "rating_word": {
+            "id": 26,
+            "name": "Obnoxious"
+        }
+    }],
+    "counts": {
+        "this": 14,
+        "total": 14
+    }
+}
+
+
+### Speakers
+
+:id スピーカの固有ID
+
+スピーカーの情報を得る
+
+
+
+### Talks
+
+
+### Themes
+
+題名、テーマに関する取得
+
+
+### Playlists
+プレイリスト関連の検索
+
+### Search
+
+### Query
+カテゴリと検索文字列を指定して検索結果を得る

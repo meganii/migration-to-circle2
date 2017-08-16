@@ -1,0 +1,39 @@
+---
+title: "chromy"
+date: 2017-08-12T22:50:26+09:00
+lastmod: 2017-08-12T22:50:26+09:00
+comments: true
+category: ['Tech']
+tags: ['chromy','Automation']
+published: false
+slug: chromy
+img:
+---
+
+Google Chromeをchromyで
+
+<!--more-->
+{{% googleadsense %}}
+
+
+ElectronでCookieの利用
+
+[解答：まちがった自動ログイン処理 \| yohgaki's blog](https://blog.ohgaki.net/wrong-auto-login-the-answer)
+
+
+### multi instance
+
+```js
+const Chromy = require('chromy')
+
+let port = 9222
+let promises = []
+for (let i = 0; i < 4; i++) {
+    let chromy = new Chromy({port: port++})
+    let p = chromy.chain().goto('http://example.com').end().then(() => chromy.close())
+    promises.push(p)
+}
+Promise.all(promises).then(() => {
+  console.log('done')
+})
+```
