@@ -49,7 +49,7 @@ jobs:
           name: run tests
           command: |
             python script/vectorize_text.py
-            /usr/local/bin/hugo version
+            hugo version
 
       - store_artifacts:
           path: test-reports
