@@ -22,9 +22,6 @@ jobs:
 
     steps:
       - checkout
-      - add-ssh-keys:
-          fingerprints:
-            - "a1:a2:a3:a4:a5:a6:a7:a8:a1:a2:a3:a4:a5:a6:a7:a8"
       - run:
           name: Setup git user
           command: |
@@ -39,6 +36,11 @@ jobs:
             hugo version
             ruby -v
             cat data/relatedposts.yml
+
+      - deploy:
+          name: Git push
+          command: |
+            git add data/* tmp/* && git commit -m "[ci skip] publish"; if [ $? -eq 0 ]; then git push origin master; else :; fi
 
       - store_artifacts:
           path: test-reports
