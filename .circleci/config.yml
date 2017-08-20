@@ -38,6 +38,7 @@ jobs:
             python script/vectorize_text.py
             hugo version
             ruby -v
+            cat data/relatedposts.yml
 
       - store_artifacts:
           path: test-reports
