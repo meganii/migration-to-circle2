@@ -22,27 +22,14 @@ jobs:
 
     steps:
       - checkout
-      # - run: docker pull $DOCKER_IMAGE_REPO:latest
-      # - run: docker build -t circleci --cache-from $DOCKER_IMAGE_REPO:latest .
-      # - run: docker tag circleci $DOCKER_IMAGE_REPO:latest
-      # - run: docker push $DOCKER_IMAGE_REPO:latest
-
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "requirements.txt" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-
+      - add-ssh-keys:
+          fingerprints:
+            - "a1:a2:a3:a4:a5:a6:a7:a8:a1:a2:a3:a4:a5:a6:a7:a8"
       - run:
-          name: install dependencies
+          name: Setup git user
           command: |
-            pip install numpy scipy scikit-learn
-
-      - save_cache:
-          paths:
-            - ./venv
-          key: v1-dependencies-{{ checksum "requirements.txt" }}
+            git config --global user.email "yuhei24@gmail.com"
+            git config --global user.name "megnaii"
 
       # run tests!
       - run:
@@ -50,6 +37,7 @@ jobs:
           command: |
             python script/vectorize_text.py
             hugo version
+            ruby -v
 
       - store_artifacts:
           path: test-reports
